@@ -1,0 +1,23 @@
+Please follow mentioned steps in chronological order:
+ADMIN:
+1) First create ADMIN with username as ADMIN, no passcode required.
+2) Set number of hours in college, i.e no of periods.
+3) Create folders for Dept., year, Subject code.
+4) Upload Template for desired Dept., year, Section. 
+5) Generate encodings by first uploading renamed photos to Dept., year. 
+   ->Now generate Encoding by selecting desired Dept., year.
+   ->Encodings are goruped for all sections.
+   ->Template differs from section to section.
+   ->Therefore we generate encodings for Dept., year. But upload template for Dept., year, Section
+6) Combine Encoding from two different Dept., year. And entering Special Subject name to which these selected encodings will be combined.
+   ->But first encodings for those dept and years must be generated. The list of available encodings is provided for reference. 
+7) Now in Registration control Generate passcode and then open Registrations.
+8) To view attendacne for Dept., year, section all fields must be filled with necessary details
+   ->To view attendance for Special Subject ADMIN must enter NONE in Dept. field and 0 in year filed
+USER:
+9) Create a user profile for capturing photos and marking attendance
+10) The Generated passcode must be entered while creating a user account.
+11) login as User and select Dept., year, section and capture photo and mark attendance also can view marked attnedance, 
+    ->if missing someone you can recapture their faces again.
+   ->Take attendance is for marking attendacne for individual Dept., year, section, subject code.
+   ->Take combined attendace is to mark attendance for for Special subject to which encodings of various depts. are combined earlier in step 6

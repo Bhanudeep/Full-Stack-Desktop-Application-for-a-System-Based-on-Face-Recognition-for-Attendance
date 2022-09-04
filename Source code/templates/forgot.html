@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>Faculty Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/forgot.css">
+    <script type="text/javascript">
+      function waitstmt()
+      {
+        document.getElementById('verify_button').style.display="none";
+        document.getElementById('submit_alert').innerHTML="Please check your registered mailid for OTP to reset the password.";
+      }
+    </script>
+  </head>
+  <body>
+    <header class="d-flex justify-content-center">
+      <center>Face Recognition Based Attendance App</center>
+    </header>
+    <br><br>
+    <div class="container">     <!-- container -->
+      <div class="row">         <!-- row -->
+          <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center"> <!-- column -->
+              <div class="row">     <!-- row -->
+                  <div class="col-lg-6 col-md-8 mx-auto"> <!-- column -->
+
+                      <!-- form card -->
+                      <div class="card rounded shadow shadow-sm">
+                          <div class="card-header">
+                            <center>
+                              <h3 class="mb-0" id="card_header">Forgot password</h3>
+                            </center>
+                          </div>
+                          <div class="card-body">     <!-- card-block -->
+                              <form class="form" role="form" id="forgot_form" method="POST" action="/forgot">
+                                {% with messages = get_flashed_messages() %}
+                                     {% if messages %}
+                                           {% for message in messages %}
+                                           <div class="alert alert-danger" role="alert">
+                                            <center>
+                                              {{ message }}
+                                            </center>
+                                           </div>
+                                           {% endfor %}
+                                     {% endif %}
+                                  {% endwith %}
+                                  <div class="form-group">
+                                      <label for="Email_Id">Email Id</label>
+                                      <input type="text" class="form-control" id="mailid" name="mailid" placeholder="Enter your registered mailid" required>
+                                    </div>
+                                    <a href="{{url_for('home')}}">Login</a>
+                                  <center>
+                                    <button type="submit" class="btn btn-success btn-lg" id="verify_button" onclick="waitstmt()">Verify</button>
+                                    <span id="submit_alert" style="color: green;font-size: 20px;"></span>
+                                  </center>
+                              </form>
+                          </div>
+                          <!--/card-block-->
+                      </div>
+                      <!-- /form card login -->
+                  </div>
+              </div>
+              <!--/row-->
+          </div>
+          <!--/col-->
+      </div>
+      <!--/row-->
+    </div>
+<!--/container-->
+<div id="footer" class="d-flex justify-content-center">
+    Designed in 2022
+    </div>
+  </body>
+</html>

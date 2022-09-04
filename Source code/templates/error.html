@@ -1,0 +1,170 @@
+<html>
+<head>
+  <title> Face Recognition Attendance</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" type="text/css" href="/static/css/error.css">
+  <script type="text/javascript" src="/static/js/error.js"></script>
+</head>
+<body>
+  <header class="d-flex justify-content-center">
+      <center>Face Recognition Based Attendance App</center>
+  </header>
+  <br>
+  <br>
+  <div id="div1" class="container">       <!-- container division -->
+    <div id="div2" class="row">           <!-- row division -->
+      <div id="div3" class="col">          <!-- column division -->
+        <br>
+        <form name="Attendance" method="POST" enctype="multipart/form-data">        <!-- Form to show error images, retake image and etc..  -->
+          <div class="container" id="flash_container" style="position: relative;">   <!-- Flash Messages division starts here -->
+            <h5 style="color: red">
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+                    {% if success %}
+                      <div class="alert alert-success" style="color: green;" role="alert">
+                        <center>
+                          {{ message }}
+                        </center>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </h5>
+          </div>      <!-- Flash messages division ends up here -->
+          <br>
+
+            <!-- The following division is not visible to the user only for details upload purpose to the server -->
+
+          <div class="container" id="details_container" style="position: relative; border: 2px solid red; border-radius:10px;display: none;">   
+            <br>
+            <center><h5><strong>The details you entered are</strong></h5></center><br>
+            <hr style="border:1px solid black;margin-top: 0px; ">
+            <div class="row">
+              <div class="col">
+                <label for="department" class="col-sm-8 col-form-label"><h4 style="color: #040404;">Department</h4></label>
+              </div>
+              <div class="col">
+                <input name="department" id="department" type="text" class="form-control" value="{{dep}}"  maxlength="5" style="border-color: #090609;width: 80px;">
+              </div>
+              <div class="col">
+                <label for="year" class="col-sm-6 col-form-label"><h4 style="color:#040404;">Year</h4></label>
+              </div>
+              <div class="col">
+                <input name="year" id="year" type="text" class="form-control" value="{{year}}" maxlength="1" style="border-color: #090609;width: 80px;"readonly>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="subject_code_label" class="col-sm-6 col-form-label"><h4 style="color: #040404">Subject code</h4></label>
+              </div>
+              <div class="col">
+                <input name="subject" id="subject" type="text" class="form-control" value="{{sub}}" maxlength="1" style="border-color: #090609;width: 80px;" readonly>
+              </div>
+              <div class="col">
+                <label for="hour" class="col-sm-6 col-form-label"><h4 style="color: #040404;">Hour</h4></label>
+              </div>
+              <div class="col">
+                <input name="hour" id="hour" type="text" class="form-control" value="{{hour}}" maxlength="1" style="border-color: #090609;width: 80px;" readonly>
+              </div>
+              <div class="col">
+                <input name="total" id="total" type="text" class="form-control" value="{{present}}" maxlength="2" style="border-color: #090609;width: 80px;" readonly>
+              </div>
+            </div>
+          </div>        <!-- Invisible detais division endsup here -->
+
+          {% if images %}     <!-- Retake Image option division it is visible when error images are found -->
+            <div class="container" id="image_container" style="position: relative; border: 2px solid black; border-radius:10px;">
+              <center>
+                <h3 style="color:#540569">Please... Retake a group image for</h3>
+              </center>
+              <br>
+              {% for image in images %}
+                <image src={{image}} frameborder='0' scrolling='no' width='150' height='150'></image>
+              {% endfor %}
+              <br>
+              <br>
+              <center>
+                <button type="submit" formaction="/retake" id="retake_button" class="btn btn-primary" style="color: black;width: 155px;font-size: 22;">Retake</button>
+              </center>
+                <br>
+            </div>
+            <br>          <!-- Retake image division ends here -->
+          {% else %}
+          <div class="container" id="container2" style="position: relative; border: 2px  border-radius:10px;">  <!-- This division only visible when there is no error image that show Next and finish options -->
+            <div class="row" style="padding-top: 2px;padding-bottom: 2px;">
+              <div class="col" style="padding-top: 2px;padding-bottom: 2px;">
+                <center>
+                <button type="submit" formaction="/retake" id="next_button" class="btn btn-primary" style="color: black;width: 155px;font-size: 22;">Next</button>
+              </center>
+              </div>
+              <div class="col" style="padding-top: 2px;padding-bottom: 2px;">
+                <center>
+                <button type="button" id="upload_button" class="btn btn-success" onclick="finish()" style="color: black;width: 155px;font-size: 22;">Finish</button>
+              </center>
+              </div>
+            </div>
+          </div>      <!-- next and finish option division ends here -->
+          <div class="container" id="container3" style="position: relative; border: 2px solid black; border-radius:10px; display: none;">   <!-- This container is visible when user clicks Finish option in above mentioned division for Further options -->
+            <br>
+            <div class="row" style="padding-top: 2px;padding-bottom: 2px;">
+              <div class="col" style="padding-top: 2px;padding-bottom: 2px;"> 
+                <center><button type="button" id="list_button" style="color: black;width: 200px;font-size: 22;" class="btn btn-info" onclick="show_xl_sheet()">View Attendance</button></center>
+              </div>
+              <div class="col" style="padding-top: 2px;padding-bottom: 2px;">
+                <center><button type="button" id="ablist_button" style="color: black;width: 120px;font-size: 22;" class="btn btn-danger" onclick="ab_list()">Absentees</button></center>
+              </div>
+              <div class="col" style="padding-top: 2px;padding-bottom: 2px;">
+                <center><button type="submit" formaction="/" id="home_button" style="color: black;width: 120px;font-size: 22;" class="btn btn-success">Home</button></center>
+              </div>
+            </div>
+            <br>
+          </div> <!-- View attendance, absentees, Home option division ends here -->
+          {% endif %}
+          <br>
+          <div class="container" id="absentees" style="position: relative; border: 2px solid black; border-radius:10px; display: none;">          <!-- division to show absentees list -->
+            <center><u><span style="font-size: 24px;color: red;">Absentees</span></u>
+              <br><br>
+              {% for list in absent_list %}
+              {{ list }}<br>
+              {% endfor %}
+            </center>
+            <br><br><br>
+          </div>          <!-- absentees list division ends up here -->
+          <div class="container" id="excel_sheet"style="position: relative; border: 2px solid black; border-radius:10px; display: none;">         <!-- View attendance form excelsheet division -->
+            <center>
+              <div style="width: 100%">
+                <span style="font-size: 24px;color: green;">Attendance Sheet</span>
+              </div>
+              <div style="overflow: scroll; padding: 2px; width: 100%">
+                
+                {% for department in departments_list %}
+                <br>
+                {{department}}
+                  {% include "excel_html/"+department+"_"+year+"_"+sub+".html" %}
+                  <br>
+                  <br>
+                {% endfor %}
+              </div>
+            </center>
+          </div>    <!-- View attendance division ends here -->
+        </form>     <!-- form to retake image ends up here -->
+      </div>
+    </div>
+  </div>
+  <div id="footer" class="d-flex justify-content-center">
+    Designed in 2022 &copy;
+  </div>
+</body>
+</html>
+
+
+
+

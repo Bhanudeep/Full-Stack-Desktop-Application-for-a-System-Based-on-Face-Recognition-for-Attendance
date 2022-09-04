@@ -1,0 +1,116 @@
+<html>
+  <head> 
+    <title>Faculty Registration</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script type="text/javascript" src="/static/js/register.js"></script>
+    <link type="text/css" rel="stylesheet" href="/static/css/register.css">
+    <script type="text/javascript">
+      function checkusername()
+      {
+        if(document.getElementById('UserName').value=="ADMIN")
+        {
+          document.getElementById('passcode_div').style.display="none";
+          document.getElementById('passcode').value="NONE";
+        }
+        else
+        {
+          document.getElementById('passcode_div').style.display="block";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="d-flex justify-content-center">
+      <center>Face Recognition Based Attendance App</center>
+    </header>
+    <br><br><br>
+    <div class="container">   <!-- container -->
+      <div class="row">   <!-- row -->
+          <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">  <!-- column -->
+              <div class="row">   <!-- row -->
+                  <div class="col-lg-6 col-md-8 mx-auto"> <!-- column -->
+
+                      <!-- form card login -->
+                      <div class="card rounded shadow shadow-sm">
+                          <div class="card-header">
+                            <center>
+                              <h3 class="mb-0">SignUP</h3>
+                            </center>
+                          </div>
+                          <div class="card-body"> <!-- card body -->
+                              <form role="form" id="registration_form" method="POST">
+                                {% with messages = get_flashed_messages() %}<!-- flash messages -->
+                                     {% if messages %}
+                                           {% for message in messages %}
+                                           <div class="alert alert-danger" id="alert_message" style="color: red;" role="alert">
+                                            <center>{{ message }}</center>
+                                           </div>
+                                           {% endfor %}
+                                     {% endif %}
+                                  {% endwith %}         <!-- end of flass messages -->
+                                    <center><div class="alert alert-danger" id="fillup_alert" style="display: none;" role="alert"></div></center>
+                                    <div class="form-group">
+                                      <label for="UserName"> User Name</label>
+                                      <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Bhanudeep@5" onkeyup="checkusername()" required>
+                                    </div>
+
+                                    <label for="First_Name">Name</label>
+                                    <div class="form-row">
+                                      <div class="col">
+                                        <input type="text" id="First_Name" name="First_Name" class="form-control" placeholder="First name" required>
+                                      </div>
+                                      <div class="col">
+                                        <input type="text" id="Last_Name" name="Last_Name" class="form-control" placeholder="Last name(Surname)" required>
+                                      </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                      <label for="Mailid">Email</label>
+                                      <input type="email" class="form-control" id="Mailid" name="Mailid" placeholder="Bhanudeep@gmail.com" onkeyup ="checkmail()" required>
+                                    </div>
+                                    <span id="mail_alert" style="color: red;"></span>
+                                    <div class="form-group">
+                                      <label for="Password">Password</label>
+                                      <input type="password" class="form-control" id="Password" name="Password" onkeyup="checkpassword()"  required>
+                                    </div>
+                                    <span id="password_alert" style="color: red;"></span>
+                                    <div class="form-group">
+                                      <label for="CPassword">Confirm Password</label>
+                                      <input type="password" class="form-control" id="CPassword" name="CPassword" onkeyup ="passwordmatch()" required>
+                                    </div>
+                                    <span id="cpassword_alert" style="color: red;"></span>
+                                    <div id="passcode_div" class="form-group">
+                                      <label id="passcodelabel" for="passcode">Passcode</label>
+                                      <input type="password" class="form-control" id="passcode" name="passcode" required>
+                                    </div>
+                                    <span id="passcode_alert" style="color: red;"></span>
+                                    <br>
+                                    <a href="{{url_for('home')}}">Already a User ?</a>
+
+                                  <button type="submit" class="btn btn-success btn-lg float-right" id="signup_button" onclick="checkdetails();">Signup</button>
+                              </form>
+                              <!-- /form card login -->
+                          </div>
+                          <!--/card body-->
+                      </div>
+                      <!-- card-block -->
+                  </div>
+                  <!-- /col -->
+              </div>
+              <!--/row-->
+          </div>
+          <!--/col-->
+      </div>
+      <!--/row-->
+    </div>
+<!--/container-->
+<div id="footer" class="d-flex justify-content-center">
+    Designed in 2022
+    </div>
+  </body>
+</html>

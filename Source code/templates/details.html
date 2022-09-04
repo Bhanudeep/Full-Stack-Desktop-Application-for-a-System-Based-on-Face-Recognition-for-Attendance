@@ -1,0 +1,211 @@
+<html>
+<head>
+<title> Face Recognition Attendance</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="/static/js/details.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/details.css">
+</head>
+<body>
+  <!-- Body of the page starts -->
+  <header>
+    <!-- Header Starts -->
+      <div class="col" style="width: 90%;padding-top:10px;">
+        <h5 style="padding-left: 4%;color: white;"> Welcome {{username}}</h5>
+      </div>
+      <div class="col" style="width: 10%;padding-top: 2px;">
+        <form name="logout_form" method="post">
+          <div style="float: right;">
+            <button type="submit" class="btn btn-outline-primary" formaction="{{url_for('logout')}}">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </header>
+  <!-- Header ends -->
+
+  <br>
+  <br>
+  <div id="div1" class="container"> <!-- container div1 -->
+    <div id="div2" class="row">     <!-- container div2 -->
+      <div id="div4" class="row">     <!-- container div4 -->
+      <div id="div3" class="col">   <!-- container div3 -->
+        <br>
+        <br>
+        <div class="container" id="container1" name="container1" style="position: relative; border-radius:10px;">
+          <!-- take attendance and view attendance option division (container1) -->
+        <center>
+          <h5 style="color: red">
+              {% with messages = get_flashed_messages() %}          <!-- Flash Message division starts -->
+               {% if messages %}
+                 {% for message in messages %}
+                   {% if fail %}
+                      <div class="alert alert-danger" style="color: red;" role="alert">
+                          {{ message }}
+                      </div>
+                    {% else %}
+                      <div class="alert alert-success" role="alert">
+                          {{ message }}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+              {% if date_msg %}
+              <div class="alert alert-danger" style="color: red;" role="alert" id="date_alert_div">
+                <center>
+                  <span id="date_alert_info">{{date_msg}}</span>
+                </center>
+              </div>
+              {% endif %}                                   <!-- Flash Message division ends here -->
+            </h5>
+          </center>
+          <div class="row" style="padding-top: 2px;padding-bottom: 2px;">         <!-- division for Attendance options -->
+            <div class="col" style="padding-top: 2px;padding-bottom: 2px;" id="Take_Attendance_div">
+              <center>
+                <button type="button" id="take_attendance_button" class="btn btn-primary" onclick="Take_Attendance()" style="color: black;width: 200px;font-size: 22;">Take Attendance</button>
+              </center>
+            </div>
+            <br>
+            <div class="col" style="padding-top: 2px;padding-bottom: 2px;" id="Take_Attendance_div">
+              <center>
+                <button type="button" id="take_attendance_button" class="btn btn-primary" onclick="Take_Attendance_com()" style="color: black;width: 200px;font-size: 22;">Take Combined Attendance</button>
+              </center>
+            </div>
+            <div class="col" style="padding-top: 2px;padding-bottom: 2px;" id="view_attendance_div">
+              <center>
+                <button type="button" id="view_attendance_button" class="btn btn-success" onclick="view_attendance()" style="color: black;width: 200px;font-size: 22;">View Attendance</button>
+              </center>
+            </div>
+          </div>       <!-- attendance options division ends here -->
+        </div>
+        <!-- end of container1 -->
+
+        <div class="container" id="container2" name="container2" style="display: none;">      <!-- Starting of container-2  -->
+          <form name="Attendance" method="POST" enctype="multipart/form-data">           <!-- Form to  Take attendance -->
+            <center>
+              <h2 style="color:#540569">Take Attendance</h2>
+            </center>
+            <br>
+            </h5>
+            <label><h4 style="color: #040404;">Department of</h4></label>
+            <div class="input-group mb-3">
+              <input name="department" type="text" class="form-control" placeholder="eg: CSE, ECE, MECH, EEE, CIVIL, MBA,AERO,PHARMA, etc." onkeyup="checkdepartment()" style="border-color: #090609" required>
+            </div>
+            <span id="department_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404;">Year</h4></label>
+            <div class="input-group mb-3">
+              <input name="year" type="text" class="form-control" placeholder="eg: 1, 2, 3, 4" maxlength="1" onkeyup="checkyear()" style="border-color: #090609;width: 60;"required>
+            </div>
+            <span id="year_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404">Section</h4></label>
+            <div class="input-group mb-3">
+              <input name="subject" type="text" class="form-control" placeholder="eg: A,B,C, etc." onkeyup="checksubject()" style="border-color: #090609" required>
+            </div>
+            <label><h4 style="color: #040404">Subcode</h4></label>
+            <div class="input-group mb-3">
+              <input name="subcode" type="text" class="form-control" placeholder="eg: DM,BM etc."  style="border-color: #090609" required>
+            </div>
+            <span id="subject_alert" style="color: red;"></span>
+            <label id="hour_label"><h4 style="color: #040404">Hour</h4></label>
+            <div class="input-group mb-3"id="hour_div" >
+              <input name="hour" type="text" class="form-control"s placeholder="eg: 1,2,3, etc." maxlength="1" onkeyup="checkhour()" style="border-color: #090609" required>
+            </div>
+            <span id="hour_alert" style="color: red;"></span>
+            <center>
+              <button type="submit" id="take_search_button" formaction="/path" class="btn btn-primary" style="color: black;width: 155px;font-size: 22;" onclick="checkhour();">Search</button>
+            </center>
+            <br>
+            <a href="{{url_for('home')}}">Back</a>
+          </form>           <!-- Take Attendance form ends here -->
+        </div>
+        <!-- end of container2 -->
+
+        <br>
+        <div class="container" id="container3" name="container3" style="display: none;">      <!-- Starting of container-4  -->
+          <form name="Attendance" method="POST" enctype="multipart/form-data">           <!-- Form to  Take attendance -->
+            <center>
+              <h2 style="color:#540569">Take Combined Attendance</h2>
+            </center>
+            <br>
+            </h5>
+            <label><h4 style="color: #040404;">Subject name</h4></label>
+            <div class="input-group mb-3">
+              <input name="subject" type="text" class="form-control" placeholder="eg: Constitution of India, Environmental science, etc."  style="border-color: #090609" required>
+            </div>
+           
+            
+            <span id="subject_alert" style="color: red;"></span>
+            <label id="hour_label"><h4 style="color: #040404">Hour</h4></label>
+            <div class="input-group mb-3"id="hour_div" >
+              <input name="hour" type="text" class="form-control"s placeholder="eg: 1,2,3, etc." maxlength="1" onkeyup="checkhour()" style="border-color: #090609" required>
+            </div>
+            <span id="hour_alert" style="color: red;"></span>
+            <center>
+              <button type="submit" id="take_search_button" formaction="/path_com" class="btn btn-primary" style="color: black;width: 155px;font-size: 22;" onclick="checkhour();">Search</button>
+            </center>
+            <br>
+            <a href="{{url_for('home')}}">Back</a>
+          </form>           <!-- Take Attendance form ends here -->
+        </div>
+        <!-- end of container4 -->
+
+
+        <div class="container" id="container4" name="container4" style="display: none;border-radius: 10px;">
+          <!-- view_attendance container3 start -->
+          <form name="view_Attendance_form" method="POST" enctype="multipart/form-data">   <!-- View Attendance form -->
+            <center><h2 style="color:#540569">View Attendance</h2></center><br>
+            <label><h4 style="color: #040404;">Department of</h4></label>
+            <div class="input-group mb-3">
+              <input name="department" type="text" class="form-control" placeholder="eg: CSE, ECE, MECH, EEE, CIVIL, MBA,AERO,PHARMA, etc." maxlength="5" onkeyup="view_checkdepartment()" style="border-color: #090609" required>
+            </div>
+            <span id="view_department_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404;">Year</h4></label>
+            <div class="input-group mb-3">
+              <input name="year" type="text" class="form-control" placeholder="eg: 1, 2, 3, 4" maxlength="1" onkeyup="view_checkyear()" style="border-color: #090609" required>
+            </div>
+            <span id="view_year_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404">Section</h4></label>
+            <div class="input-group mb-3">
+              <input name="subject" type="text" class="form-control" placeholder="eg: abc1, 1ald,gsdd etc." onkeyup="view_checksubject()" style="border-color: #090609" required>
+            </div>
+            <span id="view_subject_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404">Date</h4></label>
+            <div class="input-group mb-3">
+            <input name="date" type="date" class="form-control" placeholder="Date" style="border-color: #090609;width: 60;" required>
+          </div>
+            <center>
+              <button type="submit" id="view_search_button" formaction="/view_attendance" class="btn btn-success" style="color: black;width: 155px;font-size: 22;">Search</button>
+            </center>
+            <br>
+            <a href="{{url_for('home')}}">Back</a>
+          </form>                                   <!-- View Attendance form ends here -->
+        </div>        <!-- end of the container3 -->
+        <br>
+        {% if view_excel %}              <!-- exce_sheet division starts -->
+          <div class="container" id="excel_sheet"style="position: relative; border: 2px solid black; border-radius:10px;">
+              <center>
+              <div style="width: 100%">
+                <span style="font-size: 20px;color: green;">{{dep}}-{{year}} {{sub}} subject {{date}} Attendance Sheet</span>
+              </div>
+              <div id="excel_sheet_content" style="overflow: scroll; padding: 2px; width: 100%">
+              </br>
+                {% extends "excel_html/"+dep+"_"+year+"_"+sub+".html" %}
+              </div>
+            </center>
+        {% endif %}                       <!-- end excel_sheet -->
+        <br>
+      </div>          <!-- end of container div3 -->
+      </div>
+    </div>          <!-- end of container div2 -->
+  </div>         <!-- end of container div1 -->
+</body>       <!-- body ends -->
+</html>
+123
+321
+1243
+3421
