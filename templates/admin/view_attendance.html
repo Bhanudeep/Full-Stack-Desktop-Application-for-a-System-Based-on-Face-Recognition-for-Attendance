@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADMIN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <style>
+      html
+      {
+        scroll-behavior: smooth;
+      }
+      body
+      {
+        background-image: url('/static/bg_image/admin.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;
+      }
+      #div3
+      {
+        background-color: white;
+        position: relative;
+        opacity: 0.8;
+        border: 2px solid white;
+        border-radius: 10px;
+        top: 64px;
+      }
+    </style>
+    <script type="text/javascript">
+      // ****************************** Admin Make Folders Functions ***********************************
+
+function length()
+  {
+    v_d_l=document.getElementById('view_department_alert').innerHTML.length; // view attendance department alert length
+    v_y_l=document.getElementById('view_year_alert').innerHTML.length;       // view attendance year alert length
+    v_s_l=document.getElementById('view_subject_alert').innerHTML.length;    // view attendance subject alert length
+  }
+
+  function view_checkdepartment(){                 // Function to check department feild is having only alphabet
+    length();
+    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;    
+    var Dep=document.view_Attendance_form.department.value;
+    var number = /[0-9]/;
+    if(number.test(Dep))
+    {
+      document.getElementById('view_department_alert').style.display="block";
+      document.getElementById('view_department_alert').innerHTML="Please ensure that Department field should contain alphabet only";
+      document.getElementById('view_search_button').disabled=true;
+    }
+    else if(format.test(Dep))
+    {
+      document.getElementById('view_department_alert').style.display="block";
+      document.getElementById('view_department_alert').innerHTML="Department field should not contain any spaces or special characters ";
+      document.getElementById('view_search_button').disabled=true;
+    }
+    else
+    {
+      document.getElementById('view_department_alert').innerHTML="";
+      document.getElementById('view_department_alert').style.display="none";
+      if(v_y_l==0 && v_s_l==0)
+      {
+        document.getElementById('view_search_button').disabled=false;
+      }
+    }
+    
+  }
+
+  function view_checkyear(){                      // Function to Check Year field have only digit
+    length();
+    var Year=document.view_Attendance_form.year.value;
+    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if(isNaN(Year) || format.test(Year))
+    {
+      document.getElementById('view_year_alert').style.display="block";
+      document.getElementById('view_year_alert').innerHTML="Please ensure that Year field have a single digit number";
+      document.getElementById('view_search_button').disabled=true;
+    }
+    
+    else
+    {
+      document.getElementById('view_year_alert').innerHTML="";
+      document.getElementById('view_year_alert').style.display="none";
+      if(v_d_l==0 && v_s_l==0)
+      {
+        document.getElementById('view_search_button').disabled=false;
+      }
+    }
+  }
+
+  function view_checksubject(){                // Function to check section filed have only alphabet
+    length();
+    var Subject=document.view_Attendance_form.subject.value;
+    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if((!isNaN(Subject) || format.test(Subject)) && Subject.length!=0)
+    {
+      document.getElementById('view_subject_alert').style.display="block";
+      document.getElementById('view_subject_alert').innerHTML="Please ensure that subject code field should not contain only digits or spaces or special characters ";
+      document.getElementById('view_search_button').disabled=true;    
+    }
+    
+    else
+    {
+      document.getElementById('view_subject_alert').innerHTML="";
+      document.getElementById('view_subject_alert').style.display="none";
+      if(v_d_l==0 && v_y_l==0)
+      {
+        document.getElementById('view_search_button').disabled=false;
+      }
+    }
+  }
+
+// ************************************************************************************************************************************
+  function show_attendance()          // Function to perform actions after clicking show_attendance button
+  {
+
+    document.getElementById('view_attendance_div').style.display="none";
+    document.getElementById('container1').style.border="2px solid black";
+    document.getElementById('container3').style.display="none";
+    document.getElementById('container2').style.display="none";
+    document.getElementById('excel_sheet').style.display="block";
+  }
+
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <h5 style="padding-left: 2%;color: white;"> Welcome {{username}}</h5>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02" style="color: white;">
+        &nbsp;&nbsp;&nbsp;
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url_for('admin_page')}}">Make Folders</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url_for('Hours_page')}}">Hours</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Upload Templates</a>
+           <ul class="dropdown-menu">
+            <li><a class="dropdown-item"  href="{{url_for('Locations_page')}}">Individual Template</a></li>
+            <br>
+             <li><a class="dropdown-item"  href="{{url_for('Combine_page')}}">Combined Template</a></li>
+           </ul>
+         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Encodings  </a>
+           <ul class="dropdown-menu">
+            <li><a class="dropdown-item"  href="{{url_for('Generate_Encodings_page')}}">Generate Encodings</a></li>
+            <br>
+             <li><a class="dropdown-item"  href="{{url_for('Seperate_Encodings_page')}}">Combine Encodings</a></li>
+             <br>
+             <li><a class="dropdown-item" href="{{url_for('Delete_Enco_page')}}">Delete Encodings</a></li>
+           </ul>
+       </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('Registration_Control_page')}}">Registration Control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('view_attendance_page')}}">View Attendance</a>
+        </li>
+       
+      </ul>
+        <form class="form-inline">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" formaction="{{url_for('logout')}}">Logout</button>
+        </form>
+      </div>
+    </nav>
+    <div id="div1" class="container"> <!-- container div1 -->
+      <div id="div2" class="row">     <!-- container div2 -->
+        <div id="div3" name="div3" class="col">   <!-- container div3 -->
+          <div class="container" id="container1" name="container1" style="position: relative; border-radius:10px;"> 
+            <br>
+          <!-- Flash M -->
+            <center>
+              <h5 style="color: red">
+                  {% with messages = get_flashed_messages() %}          <!-- Flash Message division starts -->
+                   {% if messages %}
+                     {% for message in messages %}
+                      <br><br>
+                       {% if fail %}
+                          <div class="alert alert-danger" style="color: red;" role="alert">
+                              {{ message }}
+                          </div>
+                        {% else %}
+                          <div class="alert alert-success" role="alert">
+                              {{ message }}
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                  {% if date_msg %}
+                  <div class="alert alert-danger" style="color: red;" role="alert" id="date_alert_div">
+                    <center>
+                      <span id="date_alert_info">{{date_msg}}</span>
+                    </center>
+                  </div>
+                  {% endif %}                                   <!-- Flash Message division ends here -->
+              </h5>  
+            </center>
+          </div>
+          {% if view_excel %}              <!-- exce_sheet division starts -->
+          <div class="container" id="excel_sheet"style="position: relative; border: 2px solid black; border-radius:10px;">
+              <center>
+              <div style="width: 100%">
+                <span style="font-size: 20px;color: green;">{{dep}}-{{year}}{{sec}} {{date}} Attendance Sheet</span>
+              </div>
+              <div id="excel_sheet_content" style="overflow: scroll; padding: 2px; width: 100%">
+              </br>
+              {% if success %}
+                {% extends "excel_html/"+sub+".html" %}
+              {% else %}
+                {% extends "excel_html/"+dep+"_"+year+"_"+sub+".html" %}
+              {% endif %}
+              </div>
+            </center>
+          {% else %}
+          <div class="container" id="container2" name="container2">      <!-- Starting of container-2  -->
+           <form name="view_Attendance_form" method="POST" enctype="multipart/form-data">   <!-- View Attendance form -->
+            <center><h2 style="color:#540569">View Attendance</h2></center><br>
+            <label><h4 style="color: #040404;">Department of</h4></label>
+            <div class="input-group mb-3">
+              <input name="department" type="text" class="form-control" placeholder="eg: CSE, ECE, MECH, EEE, CIVIL, MBA,AERO,PHARMA, etc." maxlength="5" onkeyup="view_checkdepartment()" style="border-color: #090609" >
+            </div>
+            <span id="view_department_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404;">Year</h4></label>
+            <div class="input-group mb-3">
+              <input name="year" type="text" class="form-control" placeholder="eg: 1, 2, 3, 4" maxlength="1" onkeyup="view_checkyear()" style="border-color: #090609" >
+            </div>
+            <span id="view_year_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404">Section</h4></label>
+            <div class="input-group mb-3">
+              <input name="subject" type="text" class="form-control" placeholder="eg: abc1, 1ald,gsdd etc." onkeyup="view_checksubject()" style="border-color: #090609" >
+            </div>
+            <span id="view_subject_alert" style="color: red;"></span>
+            <label><h4 style="color: #040404">Date</h4></label>
+            <div class="input-group mb-3">
+            <input name="date" type="date" class="form-control" placeholder="Date" style="border-color: #090609;width: 60;" >
+          </div>
+            <center>
+              <button type="submit" id="view_search_button" formaction="/view_attendance" class="btn btn-success" style="color: black;width: 155px;font-size: 22;">Search</button>
+            </center>
+          </form>           <!-- Folder creation form ends here -->
+          </div>
+          <br>
+          <!-- /container2 -->
+          <br>
+        {% endif %}                       <!-- end excel_sheet -->
+        <br>
+        </div>      <!-- /container div3 -->
+      </div>      <!-- /container div2 -->
+    </div>      <!-- /container div1 -->
+  </body>
+</html>

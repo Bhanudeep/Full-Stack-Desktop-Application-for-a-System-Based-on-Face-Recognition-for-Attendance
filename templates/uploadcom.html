@@ -1,0 +1,209 @@
+<html>
+<head>
+<title> Face Recognition Attendance</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="/static/js/upload.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/upload.css">
+</head>
+<body onload="checkcount();">
+  <header class="d-flex justify-content-center">
+      <center>Face Recognition Based Attendance App</center>
+  </header>
+  <form name="Attendance" id="Attendance" class="form-inline" method="POST" enctype="multipart/form-data">  <!-- Image upload and verify form starts here -->
+
+    <div id="div1" class="container" style="position: relative;top:60px">     <!-- container division starts here -->
+      <div id="div2" class="row">                                             <!-- row division starts here -->
+        <div id="div3" class="col">                                            <!-- column division starts here -->
+          <br>
+          <br>
+          <div class="container" style="position: relative; border: 2px solid red; border-radius:10px;">  <!-- Innercontainer-1 division starts here -->
+          <br>
+          <center><h5><strong>The details you entered are</strong></h5></center><br>
+          <hr style="border:1px solid black;margin-top: 0px; ">
+          <div class="row"> <!-- row division to show enter details -->
+            <div class="col">
+              <label for="department"><h6 style="color: #040404;">Department : {{dep}}</h6></label>
+            </div>
+            <div class="col" style="display: none;">
+              <input name="department" id="department" type="text" class="form-control" value="{{dep}}"  maxlength="5" style="border-color: #090609;width: 80px" readonly>
+            </div>
+            <div class="col">
+              <label for="year" class="col-sm-6 col-form-label"><h6 style="color:#040404;">Year : {{year}}</h6></label>
+            </div>
+            <div class="col" style="display: none;">
+              <input name="year" id="year" type="text" class="form-control" value="{{year}}" maxlength="1" style="border-color: #090609;width: 80px;"readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="subject_code_label" class="col-sm-12 col-form-label"><h6 style="color: #040404">Subject code: {{sub}}</h6></label>
+            </div>
+            <div class="col" style="display: none;">
+              <input name="subject" id="subject" type="text" class="form-control" value="{{sub}}" maxlength="1" style="border-color: #090609;width: 80px;" readonly>
+            </div>
+            <div class="col">
+              <label for="hour" class="col-sm-6 col-form-label"><h6 style="color: #040404;">Hour : {{hour}}</h6></label>
+              </div>
+              <div class="col" style="display: none;">
+              <input name="hour" id="hour" type="text" class="form-control" value="{{hour}}" maxlength="1" style="border-color: #090609;width: 80px;" readonly>
+              </div>
+            </div>  <!-- row division for details ends here -->
+            <br>
+            <br>
+            <br>
+            <div id="details_alert" name="details_alert" style="color: red;" class="alert alert-danger" role="alert" align="center">      
+            <strong style="font-size: 20px;">If these details are Wrong <a href="{{url_for('home')}}">click here</a> to correct them</strong>   
+            </div>
+            </div> 
+            <br><br>
+            <div id="img_div">  <!-- image upload division -->
+              <div class="input-group mb-3">
+                <div class="custom-file" style="border: 1px solid red;">
+                  <input type="file" id="image" name="image" class="custom-file-input" capture="camera" accept="image/*" onchange="img_info()" required>
+                  <label id="imglabel" class="custom-file-label" for="inputGroupFile01" style="color: red;">Click here to capture image</label>
+                </div>
+              </div>  <!-- image upload division ends here -->
+              <script>
+                var x = document.getElementById("demo");
+                var options = {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                      };
+                var id;
+                function getLocation() {
+                    if (navigator.geolocation)
+                    {
+                     navigator.geolocation.getCurrentPosition(find,error,options);
+                    }
+                    else
+                    { 
+                      x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                  }
+                  function error(err) {
+                    console.warn(`ERROR(${err.code}): ${err.message}`);
+                  }
+                  function find(position){
+                      point =[position.coords.latitude,position.coords.longitude];
+                      document.getElementById('demo').innerHTML=point;
+                      inside(point);e
+                      }
+                function inside(pt) {
+                    // ray-casting algorithm based on
+                    // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
+                    point = pt;
+                    var vs = {{locations}};
+                    var x = point[0], y = point[1];
+                    
+                    var inside = false;
+                    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+                        var xi = vs[i][0], yi = vs[i][1];
+                        var xj = vs[j][0], yj = vs[j][1];
+                        
+                        var intersect = ((yi > y) != (yj > y))
+                            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                        if (intersect) inside = !inside;
+                    }
+                    if(inside)
+                    {
+                      document.getElementById('location_stmt').innerHTML="";
+                      document.getElementById('verify_button').style.display="visible";
+                      performClick("image");
+                  }
+                    else
+                    {
+                    document.getElementById('location_stmt').innerHTML='You are out of the campus premises.';
+                    document.getElementById('verify_button').style.display="none";
+                    }
+                }
+                // array of coordinates of each vertex of the polygon
+
+                function performClick(elemId) {
+                   var elem = document.getElementById(elemId);
+                   if(elem && document.createEvent) {
+                      var evt = document.createEvent("MouseEvents");
+                      evt.initEvent("click", true, false);
+                      elem.dispatchEvent(evt);
+                   }
+                }
+
+              </script>
+
+              <center>
+                <br>
+                <button type="submit" id="verify_button" onclick="verifycom()" style="color: black;width: 155px ;font-size: 22;display: none;" class="btn btn-primary">Verify</button>
+              </center>
+            </div>
+            <center>
+              <span id="location_stmt" style="font-size: bold;color: red;"></span>
+            </center>
+            <center>
+              <span id="verify_stmt" style="display: none;font-size: bold;">Wait for few seconds while we process the image</span>
+            </center>
+            <input name="total" id="total" type="text" class="form-control" value="{{total}}" style="display: none" readonly>
+            <br>
+            <br>
+            {% with messages = get_flashed_messages() %}  <!-- flas messages and total count division-->
+              {% if messages %}
+                {% for message in messages %}
+                 {% if success %}         
+                 <br>     <!-- Container division for next,discard and finish -->
+                      <div class="alert alert-success" role="alert" style="border:1px solid green">
+                        <center><strong style="font-size: 20px;">{{ message }}</strong></center>
+                      </div>
+                      <br>
+                      <div class="container" style="position: relative; border: 2px solid green; border-radius:10px;">
+                        <br>
+                        <div class="row">
+                          <div class="col">
+                            <label for="hour" class="col-sm-5 col-form-label"><h4 style="color: #040404;">Count</h4></label>
+                          </div>
+                          <div class="col">
+                            <input name="count" id="count" type="text" class="form-control" value="{{count}}" maxlength="2" style="border-color: #090609;width: 80px;" readonly>
+                          </div>
+                          <!--<div class="col">
+                            <button type="submit" formaction="/save" id="save_button" style="color: black;width: 120px;font-size: 22;" class="btn btn-success">Next</button>
+                          </div>-->
+                          <div class="col">
+                            <center>
+                              <button type="submit" formaction="/discard" id="discard_button" style="color: black;width: 120px;font-size: 22;" class="btn btn-danger">Discard</button>
+                            </center>
+                          </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <center>
+                          {% if count!=0 %}
+                          <button type="submit" id="finish_button" style="color: black;width: 200px;font-size: 22;" class="btn btn-primary" onclick="finisher()">Mark Attendance</button>
+                          {% endif %}
+                          <span id="processing_statement" name="processing_statement" style="display: none;">Do not refersh or go back..while we mark the attendance...it takes few minutes</span>
+                        </center>
+                        <br>
+                        <div id="statement" name="statement" class="alert alert-success" role="alert" align="center" style="display: none;">
+                          <center>
+                            <strong style="font-size: 20px;">Total <span id="ttl" name="ttl"></span> students are detected</strong>
+                          </center>
+                        </div>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+             {% endif %}
+          {% endwith %}                   <!-- flash messages and total count division ends up here -->
+          <br>
+        </div>                        <!-- column division ends up here -->
+      </div>                      <!-- row division ends up here -->
+    </div>                  <!-- container division ends up here -->
+  </form>   
+  <br><br><br><br><br><br>
+  <p id="dem"></p>
+  <div>
+  </div>           <!-- image upload and verify form ends here -->
+</body>
+</html>

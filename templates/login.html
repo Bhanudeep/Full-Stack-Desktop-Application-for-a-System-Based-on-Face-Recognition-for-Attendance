@@ -1,0 +1,78 @@
+<html>
+  <head> 
+    <title>FRBA App</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+  </head>
+  <body>
+    <header class="d-flex justify-content-center">              <!-- header starts -->
+      <center>Face Recognition Based Attendance App</center>
+    </header>                                                   <!-- header ends here -->
+    <br>
+    <div class="container">                                                               <!-- container starts -->
+      <div class="row">                                                                   <!-- row division-1 starts -->
+          <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">    <!-- column division-1 starts -->
+              <div class="row">                                                           <!-- row division-2 starts -->
+                  <div class="col-lg-6 col-md-8 mx-auto">                                 <!-- column division-2 starts -->
+                      <div class="card rounded shadow shadow-sm">                         <!-- card block starts -->
+                          <div class="card-body-header">
+                            <center>
+                              <h3 class="mb-0">Login</h3>
+                            </center>
+                          </div>
+                          <div class="card-body">                                         <!-- card body starts -->
+                              <form class="form" role="form" id="login_form" method="POST" action="/login">   <!-- form card login -->
+                                {% with messages = get_flashed_messages() %}    <!-- Flash Messages division starts-->
+                                  {% if messages %}
+                                            {% for message in messages %}
+                                             {% if failed %}
+                                              <div class="alert alert-danger" style="color: red;" role="alert">
+                                                <center>
+                                                  {{ message }}
+                                                </center>
+                                               </div>
+                                             {% endif %}
+                                              {% if passed %}
+                                               <div class="alert alert-success" style="color: green;" role="alert">
+                                                <center>
+                                                  {{ message }}
+                                                </center>
+                                               </div>
+                                              {% endif %}
+                                           {% endfor %}
+                                     {% endif %}
+                                  {% endwith %}                                 <!-- end of Flash Messages division -->
+                                  <div class="form-group">
+                                      <label for="UserName"> User Name</label>
+                                      <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Username or Email" required>
+                                    </div>
+                                  <div class="form-group">
+                                      <label for="Password">Password</label>
+                                      <input type="password" class="form-control" id="Password" name="Password" required>
+                                    </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <a href="{{url_for('register')}}">New User ?</a><br>
+                                      <a href="{{url_for('forgot')}}">Forgot Password ?</a>
+                                    </div>
+                                    <div class="col">
+                                      <button type="submit" class="btn btn-success btn-lg float-right" id="login_button" onclick="login_stmt();">Login</button>
+                                    </div>
+                                  </div>
+                              </form>       <!-- /form card login ends here-->
+                          </div>          <!--/card-body ends here-->
+                      </div>           <!-- card block ends here -->
+                  </div>           <!-- col division-1 ends here -->
+              </div>           <!--row division-2 ends here -->
+          </div>             <!--/col division-1 ends here -->
+      </div>            <!--/row division-1 ends here -->
+    </div>        <!--/container ends here -->
+  <div id="footer" class="d-flex justify-content-center">
+    Designed in 2022
+    </div>
+  </body>
+</html>

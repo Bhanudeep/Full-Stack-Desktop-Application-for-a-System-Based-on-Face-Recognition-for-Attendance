@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADMIN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <style>
+      html
+      {
+        scroll-behavior: smooth;
+      }
+      body
+      {
+        background-image: url('/static/bg_image/admin.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;
+      }
+      #div3
+      {
+        background-color: white;
+        position: relative;
+        opacity: 0.8;
+        border: 2px solid white;
+        border-radius: 10px;
+        top: 64px;
+      }
+      @media all and (min-width: 992px) {
+        .navbar .nav-item .dropdown-menu{ display: none; }
+        .navbar .nav-item:hover .nav-link{ color: #fff;  }
+        .navbar .nav-item:hover .dropdown-menu{ display: block; }
+        .navbar .nav-item .dropdown-menu{ margin-top:0; }
+      } 
+    </style>
+    <script type="text/javascript">
+      // ****************************** Admin Make Folders Functions ***********************************
+
+  function checkhour(){                 // Function to check hour field have only digit
+    var hr=document.create_folders.hour.value;
+    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if(isNaN(hr) || format.test(hr))
+    {
+      document.getElementById('hour_alert').style.display="block";
+      document.getElementById('hour_alert').innerHTML="Please ensure that Hour field have a single digit number";
+      document.getElementById('hours_button').disabled=true;
+    }
+    else
+    {
+      document.getElementById('hour_alert').style.display="none";
+      document.getElementById('hour_alert').innerHTML="";
+      document.getElementById('hours_button').disabled=false;
+    }
+  }
+
+// ****************************************************************************************************************************
+
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <h5 style="padding-left: 2%;color: white;"> Welcome {{username}}</h5>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02" style="color: white;">
+        &nbsp;&nbsp;&nbsp;
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url_for('admin_page')}}">Make Folders</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url_for('Hours_page')}}">Hours</a>
+          </li>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Upload Templates</a>
+         <ul class="dropdown-menu">
+          <li><a class="dropdown-item"  href="{{url_for('Locations_page')}}">Individual Template</a></li>
+          <br>
+           <li><a class="dropdown-item"  href="{{url_for('Combine_page')}}">Combined Template</a></li>
+         </ul>
+       </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link  dropdown-toggle" href="{{url_for('Generate_Encodings_page')}}" data-toggle="dropdown">Encodings  </a>
+           <ul class="dropdown-menu">
+            <li><a class="dropdown-item"  href="{{url_for('Generate_Encodings_page')}}">Generate Encodings</a></li>
+            <br>
+             <li><a class="dropdown-item"  href="{{url_for('Seperate_Encodings_page')}}">Combine Encodings</a></li>
+             <br>
+             <li><a class="dropdown-item" href="{{url_for('Delete_Enco_page')}}">Delete Encodings</a></li>
+           </ul>
+       </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('Registration_Control_page')}}">Registration Control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('view_attendance_page')}}">View Attendance</a>
+        </li>
+        
+      </ul>
+        <form class="form-inline">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" formaction="{{url_for('logout')}}">Logout</button>
+        </form>
+      </div>
+    </nav>
+    <div id="div1" class="container"> <!-- container div1 -->
+      <div id="div2" class="row">     <!-- container div2 -->
+        <div id="div3" name="div3" class="col">   <!-- container div3 -->
+          <div class="container" id="container1" name="container1" style="position: relative; border-radius:10px;"> 
+          <!-- Flash M -->
+            <center>
+              <h5 style="color: red">
+                  {% with messages = get_flashed_messages() %}          <!-- Flash Message division starts -->
+                   {% if messages %}
+                     {% for message in messages %}
+                      <br><br>
+                       {% if fail %}
+                          <div class="alert alert-danger" style="color: red;" role="alert">
+                              {{ message }}
+                          </div>
+                        {% else %}
+                          <div class="alert alert-success" role="alert">
+                              {{ message }}
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                  {% if date_msg %}
+                  <div class="alert alert-danger" style="color: red;" role="alert" id="date_alert_div">
+                    <center>
+                      <span id="date_alert_info">{{date_msg}}</span>
+                    </center>
+                  </div>
+                  {% endif %}                                   <!-- Flash Message division ends here -->
+              </h5>  
+            </center>
+          </div>
+          <div class="container" id="container2" name="container2">      <!-- Starting of container-2  -->
+            <form name="create_folders" method="POST" enctype="multipart/form-data">           <!-- Form to  create folder -->
+              <center>
+                <h2 style="color:#540569">Hours</h2>
+              </center>
+              <br>
+              </h5>
+              <label id="hour_label"><h4 style="color: #040404">Number of Hours</h4></label>
+              <div class="input-group mb-3"id="hour_div" >
+                <input name="hour" type="text" class="form-control"s placeholder="eg: 1,2,3,4 etc." maxlength="1" onkeyup="checkhour()" style="border-color: #090609" required>
+              </div>
+              <span id="hour_alert" style="color: red;"></span>
+              <center>
+                <button type="submit" id="hours_button" formaction="/Save_Hour" class="btn btn-primary" style="color: black;width: 200px;font-size: 22px;" >Save</button>
+              </center>
+            </form>           <!-- Folder creation form ends here -->
+          </div>
+          <br>
+          <!-- /container2 -->
+        </div>      <!-- /container div3 -->
+      </div>      <!-- /container div2 -->
+    </div>      <!-- /container div1 -->
+  </body>
+</html>
