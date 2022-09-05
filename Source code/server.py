@@ -313,8 +313,8 @@ def mail(email,fp):
         OTP += str(digits[index])
     if fp==1:
         content = '\nHello! \nyou recently requested for password change please enter the given OTP to reset your password : '+ OTP +' .\nIf you did not request a password reset, please ignore this email or reply to let us know.This reset is only valid for the next 30 minutes.\n\nThanks....\nFaceRecognition based attendance system NMREC'
-        username = "attendance@nmrec.edu.in"
-        password = "nmrec@frba"
+        username = "8888888888"
+        password = "*********"
         sender = "attendance@nmrec.edu.in"
         recipient = email
         mail = smtplib.SMTP("smtp.gmail.com",587)
