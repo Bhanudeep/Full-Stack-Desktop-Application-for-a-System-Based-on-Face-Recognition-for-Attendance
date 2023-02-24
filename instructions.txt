@@ -1,4 +1,5 @@
 Please follow mentioned steps in chronological order:
+Before performing any operation, download and install mongodb on your system.
 ADMIN:
 1) First create ADMIN with username as ADMIN, no passcode required.
 2) Set number of hours in college, i.e no of periods.
