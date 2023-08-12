@@ -1,4 +1,11 @@
 # Desktop application using Flask for Face recognition based attendance system
+• Developed a complete desktop application for a system of attendance that uses face recognition. Focuses on
+simultaneously capturing attendance for a group of students in a class.
+• Flask framework was used to build backend for this application.
+• This web application was later compiled to an executable file with all the necessary dependencies. And is
+compatible with Windows 10 or later OS.
+• As the state government has mandated biometric-based attendance, This application is currently being used at
+various colleges.
 You need to install and setup MongoDB before running this application. 
 MongoDb is used to maintain local database to store sensitive information like passwords and attendance sheets.
 
