@@ -1,5 +1,5 @@
 # Desktop application using Flask for Face recognition based attendance system
-• Developed a complete desktop application for a system of attendance that uses face recognition. Focuses on
+• Developed a complete Full Stack application for a system of attendance that uses face recognition. Focuses on
 simultaneously capturing attendance for a group of students in a class.  
 • Flask framework was used to build backend for this application.  
 • This web application was later compiled to an executable file with all the necessary dependencies. And is
